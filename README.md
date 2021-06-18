@@ -1,12 +1,12 @@
 # Projekt1
 
-#####     SUMMARY    #####
+##     SUMMARY    ##
 
 A simple shooter showing off certain mechanics
 
 
-#####  INSTRUCTIONS  #####
+##  INSTRUCTIONS  ##
 
-WASD - Movement
-Space - Jumping/Start game
-1-5 Weapon Select
+ WASD - Movement  
+Space - Jumping/Start game  
+1-5 Weapon Select  
