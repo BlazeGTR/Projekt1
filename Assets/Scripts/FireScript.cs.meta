@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 57999fd508691c4459e4e3051b4539d7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - pistolAudio: {instanceID: 0}
+  - shotgunAudio: {instanceID: 0}
+  - fpsCam: {instanceID: 0}
+  - bloodsplatter: {fileID: 6789772693218943902, guid: 8417c765bbe11ff4c86d8f35d7ca1c7f,
+      type: 3}
+  - BulletHole: {fileID: 6789772693218943902, guid: 8417c765bbe11ff4c86d8f35d7ca1c7f,
+      type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
