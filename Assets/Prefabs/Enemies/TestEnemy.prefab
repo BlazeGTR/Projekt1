@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5445511687279699860}
   - component: {fileID: 5588813111287871738}
   - component: {fileID: 5945920505140236900}
+  - component: {fileID: 764598178541843094}
   m_Layer: 11
   m_Name: BodyHitbox
   m_TagString: Untagged
@@ -45,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  DamageMultiplier: 1
 --- !u!65 &5945920505140236900
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -58,6 +60,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.92, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &764598178541843094
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3472796739604001247}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4633070915395347294
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +93,7 @@ GameObject:
   - component: {fileID: 1379157695135672236}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -364,9 +382,10 @@ GameObject:
   - component: {fileID: 1223165769321259622}
   - component: {fileID: 8939180199786997419}
   - component: {fileID: 5608939427884050003}
+  - component: {fileID: 2786949347432642862}
   m_Layer: 11
   m_Name: HeadHitbox
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -398,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  DamageMultiplier: 3
 --- !u!65 &5608939427884050003
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -411,3 +431,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.37, y: 0.32, z: 0.04}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2786949347432642862
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5479809284148066486}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

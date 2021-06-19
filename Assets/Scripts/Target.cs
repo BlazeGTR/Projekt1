@@ -6,6 +6,7 @@ public class Target : MonoBehaviour
                         // 2 = Ranged Enemy
     EnemyController EnemyC;
     EnemyControllerRanged EnemyCRanged;
+    [SerializeField] int DamageMultiplier;
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class Target : MonoBehaviour
     }
     public void TakeDamage(float amount)
     {
-        Debug.Log("AAAAAAA");
+        amount *= DamageMultiplier;
         switch (type)
         {
             case 1:

@@ -110,7 +110,7 @@ public class FireScript : MonoBehaviour
     void Vhit(float damage, RaycastHit Rhit)
     {
         Debug.Log(Rhit.transform.gameObject.layer);
-        Debug.Log(Rhit.transform.name);
+       // Debug.Log(Rhit.transform.name);
         switch (Rhit.transform.gameObject.layer)
         {
 
@@ -201,6 +201,7 @@ public class FireScript : MonoBehaviour
                             Destroy(TracerEF, 4f);
                             if (Physics.Raycast(fpsCam.transform.position, directionPistol, out hit, Mathf.Infinity, layerMask))
                             {
+                                Debug.Log(hit.transform.name);
                                 Vhit(PistolDmg, hit);
                             }
                             Pistolammo--;
