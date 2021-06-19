@@ -43,32 +43,7 @@ public class Rocket : MonoBehaviour
 
             foreach (Collider nearbyObject in colliders)
             {
-                Rigidbody rb = nearbyObject.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    
-                    if (rb.tag != "Player")
-                    {
-                        rb.isKinematic = false;
-                        if (rb.tag == "Enemy")
-                        {
-                            rb.AddExplosionForce(BlastForce*3, transform.position, BlastRadius);
-                        }
-                        else
-                        {
-                            rb.AddExplosionForce(BlastForce, transform.position, BlastRadius);
-                        }
-                    }
-                }
-
-                EnemyController EnemyC = nearbyObject.GetComponent<EnemyController>();
-                if(EnemyC != null)
-                {
-                    if (rb.tag != "Player")
-                    {
-                        EnemyC.TurnKinematicOn();
-                    }
-                }
+              
 
                 Target target = nearbyObject.GetComponent<Target>();
                 if (target != null)

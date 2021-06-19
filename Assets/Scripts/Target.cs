@@ -13,7 +13,7 @@ public class Target : MonoBehaviour
         {
             case 1:
                 {
-                    EnemyC = GetComponent<EnemyController>();
+                    EnemyC = GetComponentInParent<EnemyController>();
                     break;
                 }
             case 2:
@@ -25,6 +25,7 @@ public class Target : MonoBehaviour
     }
     public void TakeDamage(float amount)
     {
+        Debug.Log("AAAAAAA");
         switch (type)
         {
             case 1:

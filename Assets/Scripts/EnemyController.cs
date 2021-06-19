@@ -14,10 +14,13 @@ public class EnemyController : MonoBehaviour
     public float health = 100;
     CapsuleCollider CapCollider;
 
-    Transform target;
+    Transform PlayerTransform;
+    Vector3 PlayerPosition;
     Transform LastPos;
     NavMeshAgent agent;
     Rigidbody rb;
+    PlayerMovement Playermovement;
+    GameObject PlayerObj;
 
     public AudioSource EnemyAudio;
     public AudioClip Shoot, Death, NoticePlayer, Damage;
@@ -26,21 +29,134 @@ public class EnemyController : MonoBehaviour
 
     Vector3 MinSpeed = new Vector3(0.5f, 0.5f, 0.5f);
 
+    enum State
+    {
+        Chasing,
+        Attacking,
+        Dying,
+        Idle,
+        Cooldown
+    };
+
+    State CurrentState = State.Idle;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        target = PlayerManager.instance.player.transform;
+        PlayerTransform = Player.Instance.GetTransform();
         agent = GetComponent<NavMeshAgent>();
         CapCollider = GetComponent<CapsuleCollider>();
         agent.updateRotation = false;
+        Playermovement = PlayerTransform.GetComponent<PlayerMovement>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         attackCD -= Time.deltaTime;
-        float distance = Vector3.Distance(target.position, transform.position);
+        EnemyAnimator.SetFloat("AttackCD", attackCD);
+        float distance = Vector3.Distance(PlayerTransform.position, transform.position);
+
+        switch (CurrentState)
+        {
+            case State.Chasing:
+                {
+                    RaycastHit PlayerRaycast;
+                    Debug.DrawRay(transform.position, PlayerTransform.position - transform.position);
+                    if (Physics.Raycast(transform.position, PlayerTransform.position - transform.position, out PlayerRaycast))
+                    {
+                        if (PlayerRaycast.transform == PlayerTransform)
+                        {
+                            LastPos = PlayerTransform;
+                        }
+                    }
+                    agent.SetDestination(PlayerTransform.position);
+
+                    if (distance <= attackRadius)
+                    {
+                        if (attackCD <= 0)
+                        {
+                            CurrentState = State.Attacking;
+                        }
+                    }
+                    break;
+                }
+
+            case State.Attacking:
+                {
+                    agent.velocity = Vector3.zero;
+                    RaycastHit AttackRay;
+                    Physics.Raycast(transform.position, PlayerTransform.position - transform.position, out AttackRay);
+                    attackCD = 1f;
+                    switch (AttackRay.transform.tag)
+                    {
+                        case "Player":
+                            Playermovement.TakePlayerDamage(5);
+                            //EnemyAudio.PlayOneShot(Shoot, 0.5f);
+                            CurrentState = State.Cooldown;
+                            break;
+
+                        case "Enemy":
+                            Target t = AttackRay.transform.GetComponent<Target>();
+                            t.TakeDamage(5);
+                            CurrentState = State.Cooldown;
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+                }
+
+            case State.Dying:
+                {
+                        agent.velocity = Vector3.zero;
+                        agent.speed = 0;
+                        Invoke("Die", 1.2f);
+                        EnemyAnimator.SetBool("IsDying", true);
+                    EnemyAudio.PlayOneShot(Death, 0.5f);
+                    Destroy(CapCollider);
+                    break;
+                }
+
+            case State.Idle:
+                {
+                    if (distance <= lookRadius)
+                    {
+                        RaycastHit PlayerRaycast;
+                        Debug.DrawRay(transform.position, PlayerTransform.position - transform.position);
+                        if (Physics.Raycast(transform.position, PlayerTransform.position - transform.position, out PlayerRaycast))
+                        {;
+                            if (PlayerRaycast.transform == PlayerTransform)
+                            {
+                                LastPos = PlayerTransform;
+                                CurrentState = State.Chasing;
+
+                                if (!seenenemy)
+                                {
+                                    EnemyAudio.PlayOneShot(NoticePlayer, 0.5f);
+                                    seenenemy = true;
+                                }
+                            }
+                        }
+                    }
+
+                        break;
+                }
+
+            case State.Cooldown:
+                {
+                    if (attackCD <= 0)
+                    {
+                        CurrentState = State.Chasing;
+                    }
+                    break;
+                }
+
+            default:
+                break;
+        }
+
+        /*
             if (!Dying)
             {
                 if (distance <= lookRadius)
@@ -78,33 +194,17 @@ public class EnemyController : MonoBehaviour
                     agent.SetDestination(LastPos.position);
                 }
             }
-            else
-            {
-                agent.velocity = Vector3.zero;
-                agent.speed = 0;
-            } 
+        */
     }
 
-    public void TurnKinematicOn()
-    {
-        Invoke("TurnKinematicOn2", 1f);   
-    }
-
-    void TurnKinematicOn2()
-    {
-        rb.isKinematic = true;
-    }
     public void TakeEnemyDamage(float amount)
     {
         health -= amount;
         if(health <= 0)
         {
-            EnemyAudio.PlayOneShot(Death, 0.5f);
-            Dying = true;
-            agent.velocity = Vector3.zero;
-            Invoke("Die", 1.2f);
-            EnemyAnimator.SetBool("IsDying", true);
-            Destroy(CapCollider);
+           // EnemyAudio.PlayOneShot(Death, 0.5f);
+            CurrentState = State.Dying;
+            //agent.velocity = Vector3.zero;
         }
         else
         {
@@ -122,7 +222,7 @@ public class EnemyController : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
         }
-        transform.rotation = target.rotation;
+        transform.rotation = PlayerTransform.rotation;
     }
 
     private void OnDrawGizmosSelected()

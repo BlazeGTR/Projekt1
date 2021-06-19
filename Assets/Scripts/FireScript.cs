@@ -99,6 +99,8 @@ public class FireScript : MonoBehaviour
 
     PlayerMovement PlayerM;
     int BurstAmount;
+    [SerializeField]LayerMask layerMask;
+
 
     private void Start()
     {
@@ -109,10 +111,12 @@ public class FireScript : MonoBehaviour
     {
         Debug.Log(Rhit.transform.gameObject.layer);
         Debug.Log(Rhit.transform.name);
-        switch(Rhit.transform.gameObject.layer)
+        switch (Rhit.transform.gameObject.layer)
         {
+
             case 11:
                 {
+                    Debug.Log("HIT ENEMY");
                     GameObject impactEF = Instantiate(bloodsplatter, Rhit.point, Quaternion.LookRotation(Rhit.normal));
                     Destroy(impactEF, 2f);
                     Target target = Rhit.transform.GetComponent<Target>();
@@ -181,8 +185,8 @@ public class FireScript : MonoBehaviour
         if (ShootCD <= 0 && !isReloading && ReloadTimer <= 0)
         {
             RaycastHit hit;
-            int layerMask = 1 << 10;
-            layerMask = ~layerMask;
+           // int layerMask = 1 << 10;
+           // layerMask = ~layerMask;
             switch (Weapon)
             {
                 //Pistol
@@ -322,7 +326,7 @@ public class FireScript : MonoBehaviour
     {
         if (ShootCD <= 0 && !isReloading && ReloadTimer <= 0)
         {
-            RaycastHit hit;
+            //RaycastHit hit;
             int layerMask = 1 << 10;
             layerMask = ~layerMask;
             switch (Weapon)
